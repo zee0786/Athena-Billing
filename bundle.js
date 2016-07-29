@@ -60,20 +60,18 @@
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
-	var _BillingBox = __webpack_require__(196);
+	var _App = __webpack_require__(196);
 
-	var _BillingBox2 = _interopRequireDefault(_BillingBox);
+	var _App2 = _interopRequireDefault(_App);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var store = (0, _redux.createStore)(_reducers2.default);
 
-	var isAuthUser = "false";
-
 	(0, _reactDom.render)(_react2.default.createElement(
 	  _reactRedux.Provider,
 	  { store: store },
-	  _react2.default.createElement(_BillingBox2.default, null)
+	  _react2.default.createElement(_App2.default, null)
 	), document.getElementById('root'));
 
 /***/ },
@@ -22667,22 +22665,22 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	  value: true
 	});
 
 	var _redux = __webpack_require__(179);
 
-	var _billing = __webpack_require__(195);
+	var _students = __webpack_require__(195);
 
-	var _billing2 = _interopRequireDefault(_billing);
+	var _students2 = _interopRequireDefault(_students);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var BillingApp = (0, _redux.combineReducers)({
-		billing: _billing2.default
+	var todoApp = (0, _redux.combineReducers)({
+	  students: _students2.default
 	});
 
-	exports.default = BillingApp;
+	exports.default = todoApp;
 
 /***/ },
 /* 195 */
@@ -22696,32 +22694,45 @@
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-	var billItem = function billItem(state, action) {
+	var todo = function todo() {
+	  var state = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+	  var action = arguments[1];
+
 	  switch (action.type) {
-	    case 'ADD_TO_BILL':
+	    case 'ADD_STUDENT':
 	      return {
 	        id: action.id,
-	        item: action.item
+	        studentItem: action.studentItem
 	      };
+	    case 'DELETE_STUDENT':
+	      if (state.id !== action.id) {
+	        return true;
+	      }
+
+	      return false;
+
 	    default:
 	      return state;
 	  }
 	};
 
-	var billing = function billing() {
+	var students = function students() {
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 	  var action = arguments[1];
 
 	  switch (action.type) {
-	    case 'ADD_TO_BILL':
-	      return [].concat(_toConsumableArray(state), [billItem(undefined, action)]);
-
+	    case 'ADD_STUDENT':
+	      return [].concat(_toConsumableArray(state), [todo(undefined, action)]);
+	    case 'DELETE_STUDENT':
+	      return state, state.filter(function (t) {
+	        return todo(t, action);
+	      });
 	    default:
 	      return state;
 	  }
 	};
 
-	exports.default = billing;
+	exports.default = students;
 
 /***/ },
 /* 196 */
@@ -22730,129 +22741,36 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	  value: true
 	});
 
 	var _react = __webpack_require__(1);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _ItemList = __webpack_require__(197);
+	var _AddStudent = __webpack_require__(197);
 
-	var _ItemList2 = _interopRequireDefault(_ItemList);
+	var _AddStudent2 = _interopRequireDefault(_AddStudent);
 
-	var _BillForm = __webpack_require__(199);
+	var _VisibleTodoList = __webpack_require__(199);
 
-	var _BillForm2 = _interopRequireDefault(_BillForm);
+	var _VisibleTodoList2 = _interopRequireDefault(_VisibleTodoList);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var BillingBox = function BillingBox(_ref) {
-		var items = _ref.items;
-		var onSubmit = _ref.onSubmit;
-		return _react2.default.createElement(
-			'div',
-			null,
-			_react2.default.createElement(_BillForm2.default, { onCLick: onSubmit }),
-			_react2.default.createElement(_ItemList2.default, { Items: items })
-		);
+	var App = function App() {
+	  return _react2.default.createElement(
+	    'div',
+	    null,
+	    _react2.default.createElement(_AddStudent2.default, null),
+	    _react2.default.createElement(_VisibleTodoList2.default, null)
+	  );
 	};
 
-	exports.default = BillingBox;
+	exports.default = App;
 
 /***/ },
 /* 197 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _Item = __webpack_require__(198);
-
-	var _Item2 = _interopRequireDefault(_Item);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var ItemList = function ItemList(_ref) {
-	  var Items = _ref.Items;
-	  return _react2.default.createElement(
-	    'table',
-	    null,
-	    Items.map(function (Item) {
-	      return _react2.default.createElement(Item, _extends({
-	        key: Item.id
-	      }, Item));
-	    })
-	  );
-	};
-
-	exports.default = ItemList;
-
-/***/ },
-/* 198 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var Item = function Item(_ref) {
-	  var item = _ref.item;
-	  return _react2.default.createElement(
-	    'tr',
-	    null,
-	    _react2.default.createElement(
-	      'td',
-	      null,
-	      item.name
-	    ),
-	    _react2.default.createElement(
-	      'td',
-	      null,
-	      item.price
-	    ),
-	    _react2.default.createElement(
-	      'td',
-	      null,
-	      item.newPrice
-	    ),
-	    _react2.default.createElement(
-	      'td',
-	      null,
-	      item.isGrocery,
-	      '?"Grocery-Item":"Non Grocery-Item"'
-	    )
-	  );
-	};
-
-	Item.propTypes = {
-	  name: _react.PropTypes.string.isRequired,
-	  price: _react.PropTypes.number.isRequired,
-	  isGrocery: _react.PropTypes.bool.isRequired,
-	  newPrice: _react.PropTypes.number.isRequired
-	};
-
-	exports.default = Item;
-
-/***/ },
-/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -22867,14 +22785,15 @@
 
 	var _reactRedux = __webpack_require__(172);
 
-	var _index = __webpack_require__(200);
+	var _actions = __webpack_require__(198);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var AddToBill = function AddToBill(_ref) {
+	var AddStudent = function AddStudent(_ref) {
 	  var dispatch = _ref.dispatch;
 
 	  var input = void 0;
+	  var student = {};
 
 	  return _react2.default.createElement(
 	    'div',
@@ -22883,29 +22802,34 @@
 	      'form',
 	      { onSubmit: function onSubmit(e) {
 	          e.preventDefault();
-	          if (!input.value.trim()) {
+	          if (!input[0].value.trim() || !input[1].value.trim()) {
 	            return;
 	          }
-	          dispatch((0, _index.addToBill)(input.value));
-	          input.value = '';
-	        } },
-	      _react2.default.createElement('input', { ref: function ref(node) {
+	          student.Name = input.children[0].value;
+	          student.Marks = input.children[1].value;
+
+	          dispatch((0, _actions.addStudent)(student));
+	          input.children[0].value = '';
+	          input.children[1].value = '';
+	        }, ref: function ref(node) {
 	          input = node;
-	        } }),
+	        } },
+	      _react2.default.createElement('input', { placeholder: 'Item' }),
+	      _react2.default.createElement('input', { placeholder: 'Amount' }),
 	      _react2.default.createElement(
 	        'button',
 	        { type: 'submit' },
-	        'Add To Bill'
+	        'Add Item'
 	      )
 	    )
 	  );
 	};
-	AddToBill = (0, _reactRedux.connect)()(AddToBill);
+	AddStudent = (0, _reactRedux.connect)()(AddStudent);
 
-	exports.default = AddToBill;
+	exports.default = AddStudent;
 
 /***/ },
-/* 200 */
+/* 198 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -22913,20 +22837,181 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var nextTodoId = 0;
-
-	var AddToBill = exports.AddToBill = function AddToBill(item) {
+	var nextStudentId = 0;
+	var addStudent = exports.addStudent = function addStudent(studentItem) {
 	  return {
-	    type: 'ADD_TO_BILL',
-	    id: nextItemId++,
-	    item: item /*: {
-	               item.name,
-	               item.price,
-	               item.newPrice,
-	               item.isGrocery
-	               }*/
+	    type: 'ADD_STUDENT',
+	    id: nextStudentId++,
+	    studentItem: { Name: studentItem.Name, Marks: studentItem.Marks }
 	  };
 	};
+
+	var deleteStudent = exports.deleteStudent = function deleteStudent(id) {
+	  return {
+	    type: 'DELETE_STUDENT',
+	    id: id
+	  };
+	};
+
+/***/ },
+/* 199 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _reactRedux = __webpack_require__(172);
+
+	var _actions = __webpack_require__(198);
+
+	var _StudentList = __webpack_require__(200);
+
+	var _StudentList2 = _interopRequireDefault(_StudentList);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var mapStateToProps = function mapStateToProps(state) {
+	  return {
+	    students: state.students
+	  };
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  return {
+	    onStudentClick: function onStudentClick(id) {
+	      dispatch((0, _actions.deleteStudent)(id));
+	    }
+	  };
+	};
+
+	var VisibleTodoList = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_StudentList2.default);
+
+	exports.default = VisibleTodoList;
+
+/***/ },
+/* 200 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Student = __webpack_require__(201);
+
+	var _Student2 = _interopRequireDefault(_Student);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var StudentList = function StudentList(_ref) {
+	  var students = _ref.students;
+	  var onStudentClick = _ref.onStudentClick;
+	  return _react2.default.createElement(
+	    'table',
+	    null,
+	    _react2.default.createElement(
+	      'thead',
+	      null,
+	      _react2.default.createElement(
+	        'tr',
+	        null,
+	        _react2.default.createElement(
+	          'th',
+	          null,
+	          'Item Name'
+	        ),
+	        _react2.default.createElement(
+	          'th',
+	          null,
+	          'Amount'
+	        )
+	      )
+	    ),
+	    _react2.default.createElement(
+	      'tbody',
+	      null,
+	      students.map(function (studentItem) {
+	        return _react2.default.createElement(_Student2.default, _extends({
+	          key: studentItem.id
+	        }, studentItem, {
+	          onClick: function onClick() {
+	            return onStudentClick(studentItem.id);
+	          }
+	        }));
+	      })
+	    )
+	  );
+	};
+
+	StudentList.propTypes = {
+	  students: _react.PropTypes.arrayOf(_react.PropTypes.shape({
+	    id: _react.PropTypes.number.isRequired
+	  }).isRequired).isRequired,
+	  onStudentClick: _react.PropTypes.func.isRequired
+	};
+
+	exports.default = StudentList;
+
+/***/ },
+/* 201 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Student = function Student(_ref) {
+	  var onClick = _ref.onClick;
+	  var studentItem = _ref.studentItem;
+	  return _react2.default.createElement(
+	    'tr',
+	    null,
+	    _react2.default.createElement(
+	      'td',
+	      null,
+	      studentItem.Name
+	    ),
+	    _react2.default.createElement(
+	      'td',
+	      null,
+	      studentItem.Marks
+	    ),
+	    _react2.default.createElement(
+	      'td',
+	      null,
+	      _react2.default.createElement(
+	        'button',
+	        { onClick: onClick },
+	        'x'
+	      )
+	    )
+	  );
+	};
+
+	Student.propTypes = {
+	  onClick: _react.PropTypes.func.isRequired,
+	  studentItem: _react.PropTypes.object.isRequired
+	};
+
+	exports.default = Student;
 
 /***/ }
 /******/ ]);

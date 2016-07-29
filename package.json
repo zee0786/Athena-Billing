@@ -2,7 +2,7 @@
   "name": "aleph",
   "version": "1.0.0",
   "description": "loginPage",
-  "main": "index.jsx",
+  "main": "index.js",
   "dependencies": {
     "babel": "^6.5.2",
     "babel-core": "^6.10.4",

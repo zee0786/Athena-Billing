@@ -2,7 +2,7 @@ var webpack = require("webpack");
 
 module.exports = {
 
-    entry: { aleph:'./src/index.js' },
+    entry: { aleph:'./index.js' },
 
     output: {
         path : __dirname,
